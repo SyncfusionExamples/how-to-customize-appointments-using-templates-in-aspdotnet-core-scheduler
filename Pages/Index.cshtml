@@ -1,0 +1,92 @@
+﻿@page
+@model IndexModel
+
+<ejs-schedule id="schedule"  
+              selectedDate="new DateTime(2024, 4, 5, 10, 0, 0)"
+              startHour="09:00"
+              endHour="15:00">
+    <e-schedule-eventsettings dataSource="@Model.DataSource" template="#EventTemplate">
+    </e-schedule-eventsettings>
+    <e-schedule-views>
+        @* eventTemplate="#EventTemplate" *@
+        <e-schedule-view option="Week"></e-schedule-view>
+        <e-schedule-view option="WorkWeek"></e-schedule-view>
+        <e-schedule-view option="Month" eventTemplate="#MonthTemplate"></e-schedule-view>
+    </e-schedule-views>
+</ejs-schedule>
+
+<style>
+    .e-schedule .e-vertical-view .e-content-wrap .e-appointment {
+        border-radius: 8px;
+    }
+
+    .e-schedule .e-vertical-view .e-content-wrap .e-appointment .e-appointment-details {
+        padding: 0;
+        height: 100%;
+    }
+
+    .e-schedule .template-wrap {
+        height: 100%;
+        white-space: normal;
+    }
+
+    .e-schedule .template-wrap .subject {
+        font-weight: 600;
+        font-size: 15px;
+        padding: 4px 4px 4px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .e-schedule .template-wrap .time {
+        height: 50px;
+        font-size: 12px;
+        padding: 4px 6px 4px;
+        overflow: hidden;
+    }
+
+    .e-schedule .template-wrap .footer {
+        position: absolute;
+        bottom: 0;
+        height: 50px;
+        width: 100%;
+    }
+
+    .e-schedule .template-wrap .description {
+        font-size: 12px;
+        padding: 4px 6px 4px;
+        overflow: hidden;
+    }
+
+    .month{
+        background: orange;
+        width: 100%;
+    }
+</style>
+
+<script id="MonthTemplate">
+    <div class="month"> ${Subject} </div>
+</script>
+
+<script id="EventTemplate">
+    <div class="template-wrap" style="background:${SecondaryColor}">
+    <div class="subject" style = "background:${PrimaryColor}" > ${Subject} </div>
+        <div class="time" style = "background:${PrimaryColor}">
+                ${ getTimeString(data.StartTime) } - ${ getTimeString(data.EndTime) }
+        </div>
+        <div class="image">
+            <img src="${Url}" alt="${ImageName}"/>
+        </div>   
+        <div class="description">${Description}</div>
+        <div class="footer" style = "background:${PrimaryColor}"></div>
+    </div>
+</script>
+
+<script>
+    var instance = new ej.base.Internationalization();
+    function getTimeString(value) {
+        return instance.formatDate(value, { skeleton: 'hm' });
+    }
+</script>
+
